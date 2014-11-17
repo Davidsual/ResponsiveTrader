@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,8 +21,12 @@ namespace ResponsiveTrader.Server.ViewModels
         public ShellViewModel([Dependency]ISender sender)
         {
             _sender = sender;
-            ;
-            StartStramViewModelCommand = new SimpleCommand(x => _myLocalSubscription = _sender.StartSending(500).Subscribe(val =>
+            
+            StartStramViewModelCommand = new SimpleCommand(x => _myLocalSubscription = _sender.StartSending(500,Observable.Create<int>((IObserver<int> observer) =>
+            {
+                observer.OnNext(-1);
+                return Disposable.Empty;
+            }) ).Subscribe(val =>
             {
                 RateSent = val;
                 LastRateSent = val;
@@ -39,7 +45,6 @@ namespace ResponsiveTrader.Server.ViewModels
                     _myLocalSubscription.Dispose();
                     _myLocalSubscription = null;
                 }
-               
             });
         }
 

@@ -24,7 +24,7 @@ namespace ResponsiveTrader.Server.Sender
 
         }
 
-        public IObservable<int> StartSending(long milliseconds)
+        public IObservable<int> StartSending(long milliseconds, IObservable<int> failover)
         {
             var random = new Random();
             _context = NetMQContext.Create();
@@ -34,16 +34,27 @@ namespace ResponsiveTrader.Server.Sender
 
 
             var source = Observable
-                  .Interval(TimeSpan.FromMilliseconds(milliseconds))
-                  .Delay(TimeSpan.FromMilliseconds(100))
-                  .Select(_ => random.Next(1, 1000));
+                .Interval(TimeSpan.FromMilliseconds(milliseconds))
+                .Delay(TimeSpan.FromMilliseconds(100))
+                .Select(_ => random.Next(1, 1000))
+                .OnErrorResumeNext(failover);
 
-            _rxSender = source.ObserveOn(NewThreadScheduler.Default).Subscribe(value => _pushSocket.Send(ObjectToByteArray(new RateDto()
+            _rxSender = source.ObserveOn(NewThreadScheduler.Default).Subscribe(value =>
             {
-                RateDate = DateTime.Now,
-                RateName = "Test my rate",
-                RateValue = value
-            })));
+                try
+                {
+                    _pushSocket.Send(ObjectToByteArray(new RateDto()
+                    {
+                        RateDate = DateTime.Now,
+                        RateName = "Test my rate",
+                        RateValue = value
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    //Orrible but I don't know how to solve
+                }
+            });
 
             return source;
         }
@@ -74,11 +85,11 @@ namespace ResponsiveTrader.Server.Sender
 
             try
             {
-                _rxSender.Dispose();               
+                _rxSender.Dispose();
                 _pushSocket.Close();
-                _pushSocket.Dispose();               
+                _pushSocket.Dispose();
                 _context.Terminate();
-                _context.Dispose();                
+                _context.Dispose();
             }
             catch
             {

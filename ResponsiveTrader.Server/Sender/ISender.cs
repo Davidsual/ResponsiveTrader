@@ -8,7 +8,7 @@ namespace ResponsiveTrader.Server.Sender
 {
     public interface ISender
     {
-        IObservable<int> StartSending(long milliseconds);
+        IObservable<int> StartSending(long milliseconds, IObservable<int> failover);
         void StopSending();
     }
 }
