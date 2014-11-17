@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiveTrader.Server", "ResponsiveTrader.Server\ResponsiveTrader.Server.csproj", "{6B8FB2B2-881F-4768-B1A5-E17243814032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiveTrader.Client", "ResponsiveTrader.Client\ResponsiveTrader.Client.csproj", "{6A98F83C-3360-4C56-8B34-4F06D83F1F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponsiveTrader.Shared", "ResponsiveTrader.Shared\ResponsiveTrader.Shared.csproj", "{7AD3368A-B92E-4CE4-AB8C-B06238E6B4A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B8FB2B2-881F-4768-B1A5-E17243814032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B8FB2B2-881F-4768-B1A5-E17243814032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B8FB2B2-881F-4768-B1A5-E17243814032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B8FB2B2-881F-4768-B1A5-E17243814032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A98F83C-3360-4C56-8B34-4F06D83F1F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A98F83C-3360-4C56-8B34-4F06D83F1F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A98F83C-3360-4C56-8B34-4F06D83F1F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A98F83C-3360-4C56-8B34-4F06D83F1F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AD3368A-B92E-4CE4-AB8C-B06238E6B4A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD3368A-B92E-4CE4-AB8C-B06238E6B4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD3368A-B92E-4CE4-AB8C-B06238E6B4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD3368A-B92E-4CE4-AB8C-B06238E6B4A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
