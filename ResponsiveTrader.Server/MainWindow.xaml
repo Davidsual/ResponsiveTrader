@@ -3,6 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Button Content="Start" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Command="{Binding StartStramViewModelCommand}"/>
+        <Button Content="Stop" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Command="{Binding StopStramViewModelCommand}"/>
+        <Label Content="Number or rates sent" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="155"/>
+        <Label Content="{Binding RateSent}" HorizontalAlignment="Left" Margin="170,35,0,0" VerticalAlignment="Top" Width="89"/>
+        <Label Content="Last rate sent" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="155"/>
+        <Label Content="{Binding LastRateSent}" HorizontalAlignment="Left" Margin="165,66,0,0" VerticalAlignment="Top" Width="89"/>
+
     </Grid>
 </Window>

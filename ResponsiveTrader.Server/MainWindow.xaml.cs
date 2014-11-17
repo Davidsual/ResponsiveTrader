@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Practices.Unity;
+using ResponsiveTrader.Server.ViewModels;
 
 namespace ResponsiveTrader.Server
 {
@@ -20,8 +22,9 @@ namespace ResponsiveTrader.Server
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow([Dependency]IShellViewModel viewModel)
         {
+            this.DataContext = viewModel;
             InitializeComponent();
         }
     }
