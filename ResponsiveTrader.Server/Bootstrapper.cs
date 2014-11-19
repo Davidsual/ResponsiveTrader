@@ -31,7 +31,7 @@ namespace ResponsiveTrader.Server
         {
             base.ConfigureContainer();
             Container.RegisterType<IShellViewModel, ShellViewModel>(new TransientLifetimeManager());
-            Container.RegisterType<ISender, ResponsiveTrader.Server.Sender.Sender>(new ContainerControlledLifetimeManager(), new InjectionConstructor(ConfigurationManager.AppSettings["ServerUrl"]));
+            Container.RegisterType<ISender, ResponsiveTrader.Server.Sender.Sender>(new ContainerControlledLifetimeManager());
         }
     }
 }

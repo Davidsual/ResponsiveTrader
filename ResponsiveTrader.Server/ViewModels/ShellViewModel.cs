@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Microsoft.Practices.Unity;
+using NetMQ;
+using NetMQ.Sockets;
 using ResponsiveTrader.Server.Sender;
 
 namespace ResponsiveTrader.Server.ViewModels
@@ -18,33 +23,32 @@ namespace ResponsiveTrader.Server.ViewModels
         private int _lastRateSent = 0;
         private IDisposable _myLocalSubscription = null;
 
+        private NetMQContext _context = NetMQContext.Create();
+        
+
+
+        
         public ShellViewModel([Dependency]ISender sender)
         {
             _sender = sender;
-            
-            StartStramViewModelCommand = new SimpleCommand(x => _myLocalSubscription = _sender.StartSending(500,Observable.Create<int>((IObserver<int> observer) =>
+
+            StartStramViewModelCommand = new SimpleCommand(x =>
             {
-                observer.OnNext(-1);
-                return Disposable.Empty;
-            }) ).Subscribe(val =>
-            {
-                RateSent = val;
-                LastRateSent = val;
-            } ));
+                _myLocalSubscription = _sender.Init().CreatePublisherSequence(ConfigurationManager.AppSettings["ServerUrl"], _context)
+                    .Subscribe(val =>
+                    {
+                        RateSent = val;
+                        LastRateSent = val;
+                    });
+            });
 
             StopStramViewModelCommand = new SimpleCommand(x =>
             {
-                _sender.StopSending();
-                _rateSent = 0;
-                OnPropertyChanged("RateSent");
-
-                LastRateSent = 0;
-
-                if (_myLocalSubscription != null)
+                Task.Run(() =>
                 {
                     _myLocalSubscription.Dispose();
-                    _myLocalSubscription = null;
-                }
+                });
+
             });
         }
 

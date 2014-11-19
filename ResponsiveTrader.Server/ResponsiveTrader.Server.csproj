@@ -103,8 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MyRxExtensions.cs" />
     <Compile Include="Sender\ISender.cs" />
     <Compile Include="Sender\Sender.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="ViewModels\IShellViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SimpleCommand.cs" />
