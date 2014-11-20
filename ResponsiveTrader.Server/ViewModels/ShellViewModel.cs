@@ -12,11 +12,13 @@ using System.Windows.Threading;
 using Microsoft.Practices.Unity;
 using NetMQ;
 using NetMQ.Sockets;
+using NetMQ.zmq;
 using ResponsiveTrader.Server.Sender;
+using Poller = NetMQ.Poller;
 
 namespace ResponsiveTrader.Server.ViewModels
 {
-    public class ShellViewModel : ViewModelBase,IShellViewModel
+    public class ShellViewModel : ViewModelBase, IShellViewModel
     {
         private readonly ISender _sender;
         private int _rateSent = 0;
@@ -24,10 +26,10 @@ namespace ResponsiveTrader.Server.ViewModels
         private IDisposable _myLocalSubscription = null;
 
         private NetMQContext _context = NetMQContext.Create();
-        
 
 
-        
+
+
         public ShellViewModel([Dependency]ISender sender)
         {
             _sender = sender;
@@ -50,6 +52,32 @@ namespace ResponsiveTrader.Server.ViewModels
                 });
 
             });
+
+            Observable.Create<CompositeDisposable>(i =>
+            {
+                var rep = _context.CreateResponseSocket();
+
+                Poller poller = new Poller();
+
+                rep.Bind("tcp://127.0.0.1:5002");
+
+                rep.ReceiveReady += (s, a) =>
+                {
+                    bool more;
+                    string m = a.Socket.ReceiveString(out more);
+
+                    a.Socket.Send("Yes");
+                };
+
+                poller.AddSocket(rep);
+
+                Task pollerTask = Task.Factory.StartNew(poller.Start);
+
+                return new CompositeDisposable(rep, poller);
+            }).Publish().Connect();
+
+
+
         }
 
         public ICommand StartStramViewModelCommand { get; set; }
